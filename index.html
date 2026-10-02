@@ -5,224 +5,413 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>InteractorGate · Descarga</title>
 <meta name="description" content="Descarga de InteractorGate, aplicación de comunicación aumentativa controlada con la mirada mediante una cámara web convencional. Prototipo de investigación.">
+<meta name="theme-color" content="#3B2BB8">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 48 48'%3E%3Crect width='48' height='48' rx='12' fill='%234F46E5'/%3E%3Cpath d='M8 24c4-7 9.5-10.5 16-10.5S36 17 40 24c-4 7-9.5 10.5-16 10.5S12 31 8 24z' fill='none' stroke='white' stroke-width='3'/%3E%3Ccircle cx='24' cy='24' r='5.5' fill='white'/%3E%3C/svg%3E">
 <style>
   :root {
-    --bg: #F7F8FA;
+    --bg: #F6F7FB;
     --surface: #FFFFFF;
-    --text: #15202B;
-    --muted: #4A5866;
-    --line: #D5DCE3;
-    --accent: #0B5CAD;
-    --accent-ink: #FFFFFF;
-    --accent-soft: #E6F0FA;
-    --warn-bg: #FFF6E0;
-    --warn-line: #E0B54A;
-    --focus: #F2A900;
-    --radius: 14px;
+    --text: #141A2E;
+    --muted: #4B5470;
+    --line: #DFE3F0;
+    --brand: #4F46E5;
+    --c1: #4F46E5;  /* índigo */
+    --c2: #0284C7;  /* celeste */
+    --c3: #059669;  /* verde */
+    --c5: #DB2777;  /* rosa */
+    --soft1: #EEEDFD; --soft2: #E3F5FD; --soft3: #E0F7EF; --soft4: #FEF3DC; --soft5: #FDE7F2;
+    --warn-bg: #FFF7E6; --warn-line: #F2B544; --warn-text: #5C3D00;
+    --focus: #FFB800;
+    --radius: 18px;
+    --shadow: 0 10px 30px rgba(31, 27, 94, .10);
   }
   @media (prefers-color-scheme: dark) {
     :root:not([data-theme="light"]) {
-      --bg: #0F1720;
-      --surface: #16212C;
-      --text: #EEF2F6;
-      --muted: #B4C0CC;
-      --line: #2C3A48;
-      --accent: #5AA9F0;
-      --accent-ink: #0B1520;
-      --accent-soft: #17324D;
-      --warn-bg: #2E2614;
-      --warn-line: #8C6D1F;
+      --bg: #0D1020;
+      --surface: #161A30;
+      --text: #EEF0FA;
+      --muted: #B3B9D3;
+      --line: #2A3050;
+      --brand: #A5A0FF;
+      --c1: #8B85FF; --c2: #38BDF8; --c3: #34D399; --c5: #F472B6;
+      --soft1: #24224E; --soft2: #12324A; --soft3: #113A30; --soft4: #3A2C10; --soft5: #3E1A2E;
+      --warn-bg: #2E2410; --warn-line: #9C7420; --warn-text: #FCE7B8;
+      --shadow: 0 10px 30px rgba(0, 0, 0, .35);
     }
   }
   * { box-sizing: border-box; }
-  html { font-size: 112.5%; }               /* 18 px de base: lectura cómoda a distancia */
+  html { font-size: 112.5%; scroll-behavior: smooth; }
   body {
-    margin: 0;
-    background: var(--bg);
-    color: var(--text);
-    font-family: system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
-    line-height: 1.6;
+    margin: 0; background: var(--bg); color: var(--text);
+    font-family: system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif; line-height: 1.6;
   }
+  a { color: var(--brand); }
+  :focus-visible { outline: 4px solid var(--focus); outline-offset: 3px; border-radius: 8px; }
   .skip {
-    position: absolute; left: 16px; top: -60px;
-    background: var(--accent); color: var(--accent-ink);
-    padding: 10px 16px; border-radius: 8px; z-index: 10;
+    position: absolute; left: 16px; top: -70px; z-index: 20;
+    background: #FFFFFF; color: #141A2E; padding: 10px 16px; border-radius: 10px; font-weight: 700;
   }
   .skip:focus { top: 16px; }
-  a { color: var(--accent); }
-  :focus-visible { outline: 4px solid var(--focus); outline-offset: 3px; border-radius: 6px; }
-  .wrap { max-width: 860px; margin: 0 auto; padding: 0 16px; }
+  .wrap { max-width: 1120px; margin: 0 auto; padding: 0 16px; }
 
-  header { padding: 56px 0 28px; }
-  .brand { display: flex; align-items: center; gap: 14px; margin-bottom: 18px; }
-  .brand svg { flex: none; }
-  .brand span { font-weight: 700; font-size: 1.15rem; letter-spacing: .01em; }
-  h1 { font-size: clamp(1.9rem, 4.5vw, 2.6rem); line-height: 1.2; margin: 0 0 14px; }
-  .lead { font-size: 1.15rem; color: var(--muted); margin: 0; max-width: 46ch; }
-
-  .notice {
-    margin: 28px 0 0; padding: 16px 18px;
-    background: var(--warn-bg); border: 2px solid var(--warn-line); border-radius: var(--radius);
+  /* ---------------------------------------------------------------- hero */
+  .hero {
+    position: relative; overflow: hidden; color: #FFFFFF;
+    background:
+      radial-gradient(900px 500px at 85% 10%, rgba(14,165,233,.55), transparent 60%),
+      radial-gradient(700px 500px at 5% 100%, rgba(236,72,153,.40), transparent 60%),
+      linear-gradient(135deg, #1E1B6B 0%, #3B2BB8 45%, #2563EB 100%);
+    padding: 28px 0 110px;
   }
-  .notice strong { display: block; margin-bottom: 4px; }
-
-  .card {
-    background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius);
-    padding: 28px; margin: 28px 0;
+  .wave { position: absolute; left: 0; right: 0; bottom: -1px; width: 100%; height: 70px; display: block; }
+  .wave path { fill: var(--bg); }
+  .nav { display: flex; align-items: center; justify-content: space-between; gap: 16px; margin-bottom: 48px; }
+  .brand { display: flex; align-items: center; gap: 12px; font-weight: 800; font-size: 1.15rem; color: #FFFFFF; text-decoration: none; }
+  .nav a.link { color: #E7E9FF; font-weight: 600; text-decoration: none; padding: 10px 14px; border-radius: 10px; }
+  .nav a.link:hover { background: rgba(255,255,255,.12); }
+  .hero-grid { display: grid; grid-template-columns: 1.05fr 1fr; gap: 48px; align-items: center; position: relative; z-index: 1; }
+  .eyebrow {
+    display: inline-flex; align-items: center; gap: 8px; margin-bottom: 16px;
+    background: rgba(255,255,255,.14); border: 1px solid rgba(255,255,255,.28);
+    padding: 6px 14px; border-radius: 999px; font-size: .85rem; font-weight: 600;
   }
-  .download { display: grid; gap: 18px; }
+  .eyebrow i { width: 8px; height: 8px; border-radius: 50%; background: #34D399; box-shadow: 0 0 0 4px rgba(52,211,153,.25); }
+  .hero h1 { font-size: clamp(2rem, 5vw, 3.2rem); line-height: 1.12; margin: 0 0 18px; letter-spacing: -.01em; }
+  .hero h1 em {
+    font-style: normal;
+    background: linear-gradient(90deg, #7DD3FC, #F9A8D4);
+    -webkit-background-clip: text; background-clip: text; color: transparent;
+  }
+  .hero p.lead { font-size: 1.15rem; color: #E3E6FF; margin: 0 0 30px; max-width: 46ch; }
+  .cta { display: flex; flex-wrap: wrap; gap: 14px; align-items: center; }
   .btn {
     display: inline-flex; align-items: center; justify-content: center; gap: 12px;
-    min-height: 64px; padding: 14px 30px; border-radius: 12px;
-    background: var(--accent); color: var(--accent-ink);
-    font-size: 1.2rem; font-weight: 700; text-decoration: none; justify-self: start;
+    min-height: 60px; padding: 14px 22px; border-radius: 14px;
+    font-size: 1.05rem; font-weight: 800; text-decoration: none;
+    transition: transform .15s ease, box-shadow .15s ease;
   }
-  .btn:hover { filter: brightness(1.08); }
-  .meta { display: flex; flex-wrap: wrap; gap: 8px 24px; color: var(--muted); font-size: .95rem; margin: 0; }
-  .meta dt { font-weight: 600; color: var(--text); display: inline; }
-  .meta dd { display: inline; margin: 0 0 0 6px; }
-  .hash { font-family: ui-monospace, Consolas, monospace; font-size: .8rem; word-break: break-all; color: var(--muted); }
+  .btn-primary { background: #FFFFFF; color: #2A1F99; box-shadow: 0 12px 30px rgba(10, 8, 60, .35); }
+  .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 16px 36px rgba(10, 8, 60, .45); }
+  .btn-ghost { color: #FFFFFF; border: 2px solid rgba(255,255,255,.55); }
+  .btn-ghost:hover { background: rgba(255,255,255,.12); }
+  .chips { display: flex; flex-wrap: wrap; gap: 8px; margin: 22px 0 0; padding: 0; list-style: none; }
+  .chips li { background: rgba(255,255,255,.14); padding: 4px 12px; border-radius: 999px; font-size: .85rem; color: #EEF0FF; }
 
-  h2 { font-size: 1.45rem; margin: 0 0 16px; }
-  section { margin: 44px 0; }
-  ul.req { list-style: none; padding: 0; margin: 0; display: grid; gap: 12px; }
-  ul.req li { display: grid; grid-template-columns: 34px 1fr; gap: 10px; align-items: start; }
-  .tick {
-    width: 28px; height: 28px; border-radius: 50%; background: var(--accent-soft); color: var(--accent);
-    display: grid; place-items: center; font-weight: 700; margin-top: 2px;
+  .mock { filter: drop-shadow(0 30px 50px rgba(8, 6, 50, .45)); }
+  .mock svg { width: 100%; height: auto; display: block; }
+  .gaze { animation: gaze 9s ease-in-out infinite; }
+  .dwell { stroke-dasharray: 176; stroke-dashoffset: 176; animation: dwell 9s ease-in-out infinite; }
+  .hit { opacity: 0; animation: hit 9s ease-in-out infinite; }
+  .hit.b { animation-delay: 3s; } .hit.c { animation-delay: 6s; }
+  .caret { animation: blink 1.1s steps(1) infinite; }
+  @keyframes gaze {
+    0%, 25%  { transform: translate(284px, 182px); }
+    33%, 58% { transform: translate(180px, 258px); }
+    66%, 91% { transform: translate(388px, 258px); }
+    100%     { transform: translate(284px, 182px); }
+  }
+  @keyframes dwell {
+    0%, 3% { stroke-dashoffset: 176; } 24% { stroke-dashoffset: 0; } 26%, 36% { stroke-dashoffset: 176; }
+    57% { stroke-dashoffset: 0; } 59%, 69% { stroke-dashoffset: 176; } 90% { stroke-dashoffset: 0; } 92%, 100% { stroke-dashoffset: 176; }
+  }
+  @keyframes hit { 0%, 23% { opacity: 0; } 25%, 31% { opacity: 1; } 34%, 100% { opacity: 0; } }
+  @keyframes blink { 50% { opacity: 0; } }
+  @media (prefers-reduced-motion: reduce) {
+    html { scroll-behavior: auto; }
+    .gaze, .dwell, .hit, .caret { animation: none !important; }
+    .btn { transition: none !important; }
+    .gaze { transform: translate(284px, 182px); }
+    .dwell { stroke-dashoffset: 60; }
   }
 
-  ol.steps { list-style: none; counter-reset: s; padding: 0; margin: 0; display: grid; gap: 18px; }
-  ol.steps > li {
-    counter-increment: s; position: relative; padding: 18px 20px 18px 74px;
-    background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius);
+  /* ---------------------------------------------------------------- bloques */
+  main { position: relative; margin-top: -30px; }
+  .notice {
+    display: grid; grid-template-columns: 44px 1fr; gap: 14px; align-items: start;
+    background: var(--warn-bg); border: 2px solid var(--warn-line); color: var(--warn-text);
+    border-radius: var(--radius); padding: 18px 20px; box-shadow: var(--shadow);
   }
-  ol.steps > li::before {
-    content: counter(s); position: absolute; left: 18px; top: 16px;
-    width: 40px; height: 40px; border-radius: 50%;
-    background: var(--accent); color: var(--accent-ink);
-    display: grid; place-items: center; font-weight: 700; font-size: 1.1rem;
+  .notice .ico { width: 44px; height: 44px; border-radius: 12px; background: var(--warn-line); display: grid; place-items: center; color: #3B2600; }
+  .notice strong { display: block; font-size: 1.05rem; margin-bottom: 2px; }
+
+  .features { display: grid; grid-template-columns: repeat(3, 1fr); gap: 18px; margin: 36px 0 0; padding: 0; list-style: none; }
+  .feature { background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius); padding: 22px; box-shadow: var(--shadow); }
+  .ico { display: grid; place-items: center; }
+  .feature .ico { width: 52px; height: 52px; border-radius: 14px; margin-bottom: 12px; }
+  .feature h3 { margin: 0 0 4px; font-size: 1.1rem; }
+  .feature p { margin: 0; color: var(--muted); }
+
+  section { margin: 72px 0; }
+  .sec-head { display: flex; align-items: center; gap: 12px; margin-bottom: 22px; }
+  .sec-head .bar { width: 8px; height: 34px; border-radius: 4px; background: linear-gradient(#4F46E5, #0EA5E9); }
+  h2 { font-size: clamp(1.5rem, 3vw, 1.9rem); margin: 0; }
+
+  .download {
+    border-radius: 24px; padding: 3px; box-shadow: var(--shadow);
+    background: linear-gradient(120deg, #4F46E5, #0EA5E9, #10B981);
   }
+  .download-in {
+    background: var(--surface); border-radius: 21px; padding: 30px;
+    display: grid; grid-template-columns: auto 1fr; gap: 26px; align-items: center;
+  }
+  .win { width: 84px; height: 84px; border-radius: 22px; background: linear-gradient(135deg, #4F46E5, #0EA5E9); }
+  .download .btn-primary { background: #4F46E5; color: #FFFFFF; box-shadow: 0 10px 24px rgba(79,70,229,.35); }
+  .meta { display: flex; flex-wrap: wrap; gap: 8px; margin: 12px 0 18px; padding: 0; list-style: none; }
+  .meta li { background: var(--soft1); color: var(--text); padding: 4px 12px; border-radius: 999px; font-size: .9rem; }
+  .hash { font-family: ui-monospace, Consolas, monospace; font-size: .8rem; word-break: break-all; color: var(--muted); margin: 14px 0 0; }
+
+  .req { display: grid; grid-template-columns: repeat(auto-fit, minmax(190px, 1fr)); gap: 14px; padding: 0; margin: 0; list-style: none; }
+  .req li { background: var(--surface); border: 1px solid var(--line); border-radius: 16px; padding: 18px; display: grid; gap: 10px; align-content: start; box-shadow: var(--shadow); }
+  .req .ico { width: 44px; height: 44px; border-radius: 12px; }
+
+  ol.steps { list-style: none; padding: 0; margin: 0; display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 18px; counter-reset: s; }
+  ol.steps li {
+    counter-increment: s; background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius);
+    padding: 22px 22px 22px 86px; position: relative; box-shadow: var(--shadow);
+  }
+  ol.steps li::before {
+    content: counter(s); position: absolute; left: 20px; top: 20px; width: 48px; height: 48px; border-radius: 14px;
+    display: grid; place-items: center; font-weight: 800; font-size: 1.25rem; color: #FFFFFF; background: var(--k);
+  }
+  ol.steps li:nth-child(1) { --k: #4F46E5; } ol.steps li:nth-child(2) { --k: #0284C7; }
+  ol.steps li:nth-child(3) { --k: #0F766E; } ol.steps li:nth-child(4) { --k: #B45309; } ol.steps li:nth-child(5) { --k: #BE185D; }
   ol.steps h3 { margin: 0 0 4px; font-size: 1.1rem; }
   ol.steps p { margin: 0; color: var(--muted); }
-  kbd {
-    font-family: inherit; font-size: .9em; padding: 1px 7px; border-radius: 6px;
-    border: 1px solid var(--line); border-bottom-width: 2px; background: var(--bg); color: var(--text);
-  }
+  kbd { font-family: inherit; font-size: .9em; padding: 1px 8px; border-radius: 6px; border: 1px solid var(--line); border-bottom-width: 3px; background: var(--bg); color: var(--text); }
 
-  .privacy { display: grid; gap: 14px; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); }
-  .privacy div { background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius); padding: 18px; }
-  .privacy h3 { margin: 0 0 6px; font-size: 1.05rem; }
+  .privacy { display: grid; grid-template-columns: repeat(3, 1fr); gap: 18px; }
+  .privacy > div { background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius); padding: 22px; border-top: 6px solid var(--k); box-shadow: var(--shadow); }
+  .privacy .ico { width: 48px; height: 48px; border-radius: 14px; margin-bottom: 10px; }
+  .privacy h3 { margin: 0 0 6px; font-size: 1.08rem; }
   .privacy p { margin: 0; color: var(--muted); }
 
-  footer { border-top: 1px solid var(--line); padding: 28px 0 48px; color: var(--muted); font-size: .95rem; }
-  @media (prefers-reduced-motion: reduce) { * { transition: none !important; } }
+  .contact {
+    border-radius: 24px; padding: 34px; color: #FFFFFF;
+    display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 18px;
+    background: linear-gradient(120deg, #3B2BB8, #2563EB 60%, #0369A1);
+  }
+  .contact h2 { color: #FFFFFF; margin-bottom: 4px; }
+  .contact p { margin: 0; color: #E3E6FF; }
+  .contact .btn { background: #FFFFFF; color: #2A1F99; word-break: break-all; }
+
+  footer { padding: 36px 0 56px; color: var(--muted); font-size: .92rem; text-align: center; }
+
+  @media (max-width: 900px) {
+    .hero-grid { grid-template-columns: 1fr; gap: 36px; }
+    .features, .privacy { grid-template-columns: 1fr; }
+  }
   @media (max-width: 560px) {
-    .card { padding: 20px; }
-    .btn { justify-self: stretch; }
-    ol.steps > li { padding-left: 66px; }
+    .nav { margin-bottom: 32px; }
+    .nav .links { display: none; }
+    .btn { width: 100%; }
+    .download-in { grid-template-columns: 1fr; padding: 22px; }
+    ol.steps { grid-template-columns: 1fr; }
+    ol.steps li { padding-left: 80px; }
+    .contact { padding: 24px; }
   }
 </style>
 </head>
 <body>
 <a class="skip" href="#descarga">Saltar a la descarga</a>
 
-<header class="wrap">
-  <div class="brand">
-    <svg width="44" height="44" viewBox="0 0 48 48" aria-hidden="true">
-      <rect width="48" height="48" rx="12" fill="var(--accent)"/>
-      <path d="M8 24c4-7 9.5-10.5 16-10.5S36 17 40 24c-4 7-9.5 10.5-16 10.5S12 31 8 24z" fill="none" stroke="var(--accent-ink)" stroke-width="3"/>
-      <circle cx="24" cy="24" r="5.5" fill="var(--accent-ink)"/>
-    </svg>
-    <span>InteractorGate</span>
-  </div>
-  <h1>Escribir mensajes con la mirada, usando una cámara web común</h1>
-  <p class="lead">Aplicación de comunicación aumentativa y alternativa para personas adultas con discapacidad motriz. Se controla con los ojos y sugiere frases para escribir con menos esfuerzo.</p>
+<header class="hero">
+  <div class="wrap">
+    <nav class="nav" aria-label="Principal">
+      <a class="brand" href="#">
+        <svg width="40" height="40" viewBox="0 0 48 48" aria-hidden="true">
+          <rect width="48" height="48" rx="12" fill="#FFFFFF" fill-opacity=".16"/>
+          <path d="M8 24c4-7 9.5-10.5 16-10.5S36 17 40 24c-4 7-9.5 10.5-16 10.5S12 31 8 24z" fill="none" stroke="#FFFFFF" stroke-width="3"/>
+          <circle cx="24" cy="24" r="5.5" fill="#7DD3FC"/>
+        </svg>
+        InteractorGate
+      </a>
+      <div class="links">
+        <a class="link" href="#pasos">Instalación</a>
+        <a class="link" href="#datos">Tus datos</a>
+        <a class="link" href="#contacto">Contacto</a>
+      </div>
+    </nav>
 
-  <div class="notice" role="note">
-    <strong>Prototipo de investigación</strong>
-    InteractorGate forma parte de un proyecto de tesis y se está evaluando con participantes. La instalación la realiza el equipo de investigación junto con cada participante, después de firmar el consentimiento informado. Si llegaste aquí por otro motivo, escríbenos antes de instalarla.
+    <div class="hero-grid">
+      <div>
+        <span class="eyebrow"><i aria-hidden="true"></i>Prototipo de investigación · versión 1.1.0</span>
+        <h1>Escribe mensajes <em>con la mirada</em>, usando una cámara web común</h1>
+        <p class="lead">Aplicación de comunicación aumentativa y alternativa para personas adultas con discapacidad motriz. Se controla con los ojos y sugiere frases para escribir con menos esfuerzo.</p>
+        <div class="cta">
+          <a class="btn btn-primary" href="#descarga">
+            <svg width="24" height="24" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3v12m0 0l-5-5m5 5l5-5M4 20h16" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            Descargar para Windows
+          </a>
+          <a class="btn btn-ghost" href="#pasos">Cómo instalarla</a>
+        </div>
+        <ul class="chips" aria-label="Características">
+          <li>Windows 10 y 11</li><li>Sin hardware especial</li><li>Sugerencias de frases</li>
+        </ul>
+      </div>
+
+      <div class="mock" aria-hidden="true">
+        <svg viewBox="0 0 480 340">
+          <defs>
+            <linearGradient id="g1" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#6366F1"/><stop offset="1" stop-color="#0EA5E9"/></linearGradient>
+          </defs>
+          <rect x="6" y="6" width="468" height="328" rx="22" fill="#FFFFFF"/>
+          <path d="M28 6h424a22 22 0 0122 22v18H6V28A22 22 0 0128 6z" fill="#EEF0FB"/>
+          <circle cx="30" cy="26" r="6" fill="#F87171"/><circle cx="50" cy="26" r="6" fill="#FBBF24"/><circle cx="70" cy="26" r="6" fill="#34D399"/>
+          <text x="240" y="31" text-anchor="middle" font-size="13" font-weight="700" fill="#4B5470" font-family="Segoe UI, Arial">InteractorGate</text>
+          <rect x="26" y="62" width="428" height="40" rx="10" fill="#F4F5FB" stroke="#DFE3F0"/>
+          <text x="42" y="88" font-size="16" fill="#141A2E" font-family="Segoe UI, Arial">Quiero agua</text>
+          <rect class="caret" x="135" y="73" width="2" height="20" fill="#4F46E5"/>
+          <g font-family="Segoe UI, Arial" font-size="13" text-anchor="middle">
+            <rect x="26" y="112" width="116" height="28" rx="14" fill="#EEEDFD"/><text x="84" y="131" fill="#3B2BB8">por favor</text>
+            <rect x="150" y="112" width="96" height="28" rx="14" fill="#E3F5FD"/><text x="198" y="131" fill="#075985">fría</text>
+            <rect x="254" y="112" width="130" height="28" rx="14" fill="#E0F7EF"/><text x="319" y="131" fill="#065F46">ahora mismo</text>
+          </g>
+          <g font-family="Segoe UI, Arial" font-size="15" font-weight="700" text-anchor="middle">
+            <rect x="30" y="150" width="92" height="64" rx="12" fill="#EEEDFD"/><text x="76" y="187" fill="#3B2BB8">Sí</text>
+            <rect x="134" y="150" width="92" height="64" rx="12" fill="#FDE7F2"/><text x="180" y="187" fill="#9D174D">No</text>
+            <rect x="238" y="150" width="92" height="64" rx="12" fill="#E3F5FD"/><text x="284" y="187" fill="#075985">Agua</text>
+            <rect x="342" y="150" width="92" height="64" rx="12" fill="#E0F7EF"/><text x="388" y="187" fill="#065F46">Ayuda</text>
+            <rect x="30" y="226" width="92" height="64" rx="12" fill="#FEF3DC"/><text x="76" y="263" fill="#92400E">Dolor</text>
+            <rect x="134" y="226" width="92" height="64" rx="12" fill="#E3F5FD"/><text x="180" y="263" fill="#075985">Baño</text>
+            <rect x="238" y="226" width="92" height="64" rx="12" fill="#EEEDFD"/><text x="284" y="263" fill="#3B2BB8">Familia</text>
+            <rect x="342" y="226" width="92" height="64" rx="12" fill="#FDE7F2"/><text x="388" y="263" fill="#9D174D">Gracias</text>
+          </g>
+          <rect class="hit" x="238" y="150" width="92" height="64" rx="12" fill="none" stroke="#4F46E5" stroke-width="4"/>
+          <rect class="hit b" x="134" y="226" width="92" height="64" rx="12" fill="none" stroke="#4F46E5" stroke-width="4"/>
+          <rect class="hit c" x="342" y="226" width="92" height="64" rx="12" fill="none" stroke="#4F46E5" stroke-width="4"/>
+          <g class="gaze">
+            <circle r="33" fill="#4F46E5" fill-opacity=".08"/>
+            <circle r="28" fill="none" stroke="#C7D2FE" stroke-width="4"/>
+            <circle class="dwell" r="28" fill="none" stroke="url(#g1)" stroke-width="4" stroke-linecap="round" transform="rotate(-90)"/>
+          </g>
+          <text x="240" y="318" text-anchor="middle" font-size="12" fill="#6B7290" font-family="Segoe UI, Arial">Mira una celda y mantén la mirada para elegirla</text>
+        </svg>
+      </div>
+    </div>
   </div>
+  <svg class="wave" viewBox="0 0 1440 70" preserveAspectRatio="none" aria-hidden="true"><path d="M0,40 C240,80 480,0 720,30 C960,60 1200,10 1440,40 L1440,70 L0,70 Z"/></svg>
 </header>
 
 <main class="wrap">
-  <div class="card download" id="descarga">
-    <h2>Descargar para Windows</h2>
-    <a class="btn" href="https://github.com/InteractorGate/descargas/releases/latest/download/InteractorGate-Setup.exe">
-      <svg width="26" height="26" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3v12m0 0l-5-5m5 5l5-5M4 20h16" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
-      Descargar InteractorGate
-    </a>
-    <dl class="meta">
-      <div><dt>Versión</dt><dd>1.1.0</dd></div>
-      <div><dt>Tamaño</dt><dd>76,6 MB</dd></div>
-      <div><dt>Publicada</dt><dd>1 de octubre de 2026</dd></div>
-    </dl>
-    <p class="hash">SHA-256: ad880982166301a6f057127806e948821ca34623fd18e8c20048a7ae80297374</p>
+  <div class="notice" role="note">
+    <span class="ico" aria-hidden="true">
+      <svg width="24" height="24" viewBox="0 0 24 24"><path d="M12 8v5m0 3.5v.5M10.3 3.9L2.4 17.5A2 2 0 004.1 20.5h15.8a2 2 0 001.7-3L13.7 3.9a2 2 0 00-3.4 0z" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/></svg>
+    </span>
+    <div>
+      <strong>Prototipo de investigación</strong>
+      InteractorGate forma parte de un proyecto de tesis y se está evaluando con participantes. La instalación la realiza el equipo de investigación junto con cada participante, después de firmar el consentimiento informado. Si llegaste aquí por otro motivo, escríbenos antes de instalarla.
+    </div>
   </div>
 
-  <section aria-labelledby="req">
-    <h2 id="req">Qué necesitas</h2>
-    <ul class="req">
-      <li><span class="tick" aria-hidden="true">✓</span><span>Una computadora con <strong>Windows 10 u 11 de 64 bits</strong>. No hace falta tarjeta gráfica dedicada.</span></li>
-      <li><span class="tick" aria-hidden="true">✓</span><span>Una <strong>cámara web</strong> común, integrada o por USB, frente al rostro.</span></li>
-      <li><span class="tick" aria-hidden="true">✓</span><span><strong>Conexión a internet</strong> para las sugerencias de texto.</span></li>
-      <li><span class="tick" aria-hidden="true">✓</span><span>El <strong>código de participante y la clave</strong> que entrega el equipo de investigación.</span></li>
-      <li><span class="tick" aria-hidden="true">✓</span><span>Unos <strong>300 MB</strong> libres en el disco.</span></li>
-    </ul>
-  </section>
+  <ul class="features">
+    <li class="feature">
+      <span class="ico" style="background:var(--soft1);color:var(--c1)" aria-hidden="true">
+        <svg width="28" height="28" viewBox="0 0 24 24"><rect x="3" y="6" width="13" height="12" rx="3" fill="none" stroke="currentColor" stroke-width="2"/><path d="M16 10l5-3v10l-5-3" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/></svg>
+      </span>
+      <h3>Solo una cámara web</h3>
+      <p>Funciona con la cámara integrada de la laptop o una cámara USB común. No necesita equipos especiales.</p>
+    </li>
+    <li class="feature">
+      <span class="ico" style="background:var(--soft2);color:var(--c2)" aria-hidden="true">
+        <svg width="28" height="28" viewBox="0 0 24 24"><path d="M2 12c3-5 6.5-7.5 10-7.5S19 7 22 12c-3 5-6.5 7.5-10 7.5S5 17 2 12z" fill="none" stroke="currentColor" stroke-width="2"/><circle cx="12" cy="12" r="3.5" fill="currentColor"/></svg>
+      </span>
+      <h3>Se controla con la mirada</h3>
+      <p>Se elige una opción manteniendo la vista sobre ella unos instantes, y un parpadeo funciona como clic.</p>
+    </li>
+    <li class="feature">
+      <span class="ico" style="background:var(--soft3);color:var(--c3)" aria-hidden="true">
+        <svg width="28" height="28" viewBox="0 0 24 24"><path d="M4 6h16M4 12h10M4 18h7" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/><path d="M18 13l1 2.5 2.5 1-2.5 1L18 20l-1-2.5-2.5-1 2.5-1z" fill="currentColor"/></svg>
+      </span>
+      <h3>Sugiere frases</h3>
+      <p>Mientras escribes, propone cómo continuar el mensaje para que necesites menos selecciones.</p>
+    </li>
+  </ul>
 
-  <section aria-labelledby="pasos">
-    <h2 id="pasos">Cómo instalarla</h2>
-    <ol class="steps">
-      <li>
-        <h3>Descarga el instalador</h3>
-        <p>Usa el botón de arriba. Se guarda el archivo <strong>InteractorGate-Setup.exe</strong> en la carpeta de descargas.</p>
-      </li>
-      <li>
-        <h3>Ábrelo y permite que se ejecute</h3>
-        <p>Como es un prototipo, el instalador no está firmado y Windows puede mostrar «Windows protegió su PC». Elige <strong>Más información</strong> y luego <strong>Ejecutar de todas formas</strong>.</p>
-      </li>
-      <li>
-        <h3>Sigue el asistente</h3>
-        <p>Acepta las opciones por defecto. Al terminar quedará un acceso directo de InteractorGate en el escritorio.</p>
-      </li>
-      <li>
-        <h3>Calibra la mirada la primera vez</h3>
-        <p>Al abrir la aplicación aparecen puntos a pantalla completa. Síguelos <strong>con los ojos</strong> y, cuando se indique, mueve un poco la cabeza sin dejar de mirar el punto. Toma un par de minutos.</p>
-      </li>
-      <li>
-        <h3>Ingresa el código de participante</h3>
-        <p>Escribe el código (por ejemplo, P01) y la clave, y pulsa <kbd>Enter</kbd>. La sesión queda guardada para las siguientes veces.</p>
-      </li>
-    </ol>
-  </section>
-
-  <section aria-labelledby="priv">
-    <h2 id="priv">Tus datos</h2>
-    <div class="privacy">
-      <div>
-        <h3>La cámara no sale de tu equipo</h3>
-        <p>Las imágenes se procesan en la propia computadora para estimar la mirada. No se guardan ni se envían a internet.</p>
-      </div>
-      <div>
-        <h3>Solo un código, no tu nombre</h3>
-        <p>Al servidor se envían el texto que escribes y las selecciones, asociados a tu código de participante.</p>
-      </div>
-      <div>
-        <h3>Puedes retirarte cuando quieras</h3>
-        <p>Sin dar explicaciones. En ese caso se eliminan tus datos. Todo se borra al terminar el estudio.</p>
+  <section id="descarga" aria-labelledby="h-descarga">
+    <div class="download">
+      <div class="download-in">
+        <span class="win ico" aria-hidden="true">
+          <svg width="42" height="42" viewBox="0 0 24 24"><path d="M3 5.5l7.5-1v7H3zM11.5 4.3L21 3v8.5h-9.5zM3 12.5h7.5v7L3 18.5zM11.5 12.5H21V21l-9.5-1.3z" fill="#FFFFFF"/></svg>
+        </span>
+        <div>
+          <h2 id="h-descarga">Descargar para Windows</h2>
+          <ul class="meta">
+            <li><b>Versión</b> 1.1.0</li>
+            <li><b>Tamaño</b> 76,6 MB</li>
+            <li><b>Publicada</b> 1 de octubre de 2026</li>
+          </ul>
+          <a class="btn btn-primary" href="https://github.com/InteractorGate/descargas/releases/latest/download/InteractorGate-Setup.exe">
+            <svg width="24" height="24" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3v12m0 0l-5-5m5 5l5-5M4 20h16" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            Descargar InteractorGate
+          </a>
+          <p class="hash">SHA-256: ad880982166301a6f057127806e948821ca34623fd18e8c20048a7ae80297374</p>
+        </div>
       </div>
     </div>
   </section>
 
-  <section aria-labelledby="contacto">
-    <h2 id="contacto">Contacto</h2>
-    <p>Para dudas sobre la instalación o el estudio, escribe a <a href="mailto:U20201F282@upc.edu.pe">U20201F282@upc.edu.pe</a>.</p>
+  <section aria-labelledby="h-req">
+    <div class="sec-head"><span class="bar" aria-hidden="true"></span><h2 id="h-req">Qué necesitas</h2></div>
+    <ul class="req">
+      <li><span class="ico" style="background:var(--soft1);color:var(--c1)" aria-hidden="true"><svg width="24" height="24" viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="12" rx="2" fill="none" stroke="currentColor" stroke-width="2"/><path d="M8 20h8M12 16v4" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg></span>
+        <span><strong>Windows 10 u 11 de 64 bits</strong>. No hace falta tarjeta gráfica dedicada.</span></li>
+      <li><span class="ico" style="background:var(--soft2);color:var(--c2)" aria-hidden="true"><svg width="24" height="24" viewBox="0 0 24 24"><circle cx="12" cy="10" r="6" fill="none" stroke="currentColor" stroke-width="2"/><circle cx="12" cy="10" r="2" fill="currentColor"/><path d="M8 20h8M12 16v4" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg></span>
+        <span>Una <strong>cámara web</strong> común, frente al rostro.</span></li>
+      <li><span class="ico" style="background:var(--soft3);color:var(--c3)" aria-hidden="true"><svg width="24" height="24" viewBox="0 0 24 24"><path d="M2 9a15 15 0 0120 0M5 12.5a10 10 0 0114 0M8.5 16a5 5 0 017 0" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><circle cx="12" cy="19.5" r="1.5" fill="currentColor"/></svg></span>
+        <span><strong>Conexión a internet</strong> para las sugerencias de texto.</span></li>
+      <li><span class="ico" style="background:var(--soft4);color:#B45309" aria-hidden="true"><svg width="24" height="24" viewBox="0 0 24 24"><circle cx="8" cy="12" r="4" fill="none" stroke="currentColor" stroke-width="2"/><path d="M12 12h9M18 12v3M21 12v2" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg></span>
+        <span>El <strong>código de participante y la clave</strong> del equipo de investigación.</span></li>
+      <li><span class="ico" style="background:var(--soft5);color:var(--c5)" aria-hidden="true"><svg width="24" height="24" viewBox="0 0 24 24"><ellipse cx="12" cy="6" rx="8" ry="3" fill="none" stroke="currentColor" stroke-width="2"/><path d="M4 6v12c0 1.7 3.6 3 8 3s8-1.3 8-3V6M4 12c0 1.7 3.6 3 8 3s8-1.3 8-3" fill="none" stroke="currentColor" stroke-width="2"/></svg></span>
+        <span>Unos <strong>300 MB</strong> libres en el disco.</span></li>
+    </ul>
+  </section>
+
+  <section id="pasos" aria-labelledby="h-pasos">
+    <div class="sec-head"><span class="bar" aria-hidden="true"></span><h2 id="h-pasos">Cómo instalarla</h2></div>
+    <ol class="steps">
+      <li><h3>Descarga el instalador</h3><p>Usa el botón de descarga. Se guarda el archivo <strong>InteractorGate-Setup.exe</strong> en tu carpeta de descargas.</p></li>
+      <li><h3>Ábrelo y permite que se ejecute</h3><p>Como es un prototipo, el instalador no está firmado y Windows puede mostrar «Windows protegió su PC». Elige <strong>Más información</strong> y luego <strong>Ejecutar de todas formas</strong>.</p></li>
+      <li><h3>Sigue el asistente</h3><p>Acepta las opciones por defecto. Al terminar tendrás un acceso directo de InteractorGate en el escritorio.</p></li>
+      <li><h3>Calibra la mirada la primera vez</h3><p>Aparecen puntos a pantalla completa. Síguelos <strong>con los ojos</strong> y, cuando se indique, mueve un poco la cabeza sin dejar de mirar el punto. Toma un par de minutos.</p></li>
+      <li><h3>Ingresa tu código</h3><p>Escribe el código de participante (por ejemplo, P01) y la clave, y pulsa <kbd>Enter</kbd>. La sesión queda guardada para las siguientes veces.</p></li>
+    </ol>
+  </section>
+
+  <section id="datos" aria-labelledby="h-datos">
+    <div class="sec-head"><span class="bar" aria-hidden="true"></span><h2 id="h-datos">Tus datos</h2></div>
+    <div class="privacy">
+      <div style="--k:var(--c2)">
+        <span class="ico" style="background:var(--soft2);color:var(--c2)" aria-hidden="true"><svg width="26" height="26" viewBox="0 0 24 24"><path d="M12 3l8 3v6c0 4.5-3.3 8-8 9-4.7-1-8-4.5-8-9V6z" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/><path d="M8.5 12l2.5 2.5 4.5-5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+        <h3>La cámara no sale de tu equipo</h3>
+        <p>Las imágenes se procesan en la propia computadora para estimar la mirada. No se guardan ni se envían a internet.</p>
+      </div>
+      <div style="--k:var(--c1)">
+        <span class="ico" style="background:var(--soft1);color:var(--c1)" aria-hidden="true"><svg width="26" height="26" viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="14" rx="3" fill="none" stroke="currentColor" stroke-width="2"/><path d="M7 10h4M7 14h7" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><circle cx="17" cy="11" r="1.6" fill="currentColor"/></svg></span>
+        <h3>Solo un código, no tu nombre</h3>
+        <p>Al servidor se envían el texto que escribes y las selecciones, asociados a tu código de participante.</p>
+      </div>
+      <div style="--k:var(--c5)">
+        <span class="ico" style="background:var(--soft5);color:var(--c5)" aria-hidden="true"><svg width="26" height="26" viewBox="0 0 24 24"><path d="M14 4h5v16h-5M10 8l-4 4 4 4M6 12h10" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+        <h3>Puedes retirarte cuando quieras</h3>
+        <p>Sin dar explicaciones. En ese caso se eliminan tus datos, y todo se borra al terminar el estudio.</p>
+      </div>
+    </div>
+  </section>
+
+  <section id="contacto" aria-labelledby="h-contacto">
+    <div class="contact">
+      <div>
+        <h2 id="h-contacto">¿Tienes dudas?</h2>
+        <p>Sobre la instalación o sobre el estudio, escríbenos y te respondemos.</p>
+      </div>
+      <a class="btn" href="mailto:U20201F282@upc.edu.pe">U20201F282@upc.edu.pe</a>
+    </div>
   </section>
 </main>
 
 <footer class="wrap">
-  InteractorGate · Proyecto de tesis de Ingeniería de Software, Universidad Peruana de Ciencias Aplicadas. Prototipo de investigación; no es un dispositivo médico.
+  InteractorGate · Proyecto de tesis de Ingeniería de Software, Universidad Peruana de Ciencias Aplicadas.<br>
+  Prototipo de investigación; no es un dispositivo médico.
 </footer>
 </body>
 </html>
