@@ -20,22 +20,28 @@ La sección pública [Indicaciones para evaluadores](https://interactorgate.gith
 explica cómo recibir las credenciales por privado, registrar el entorno y completar
 el Excel de casos. No publicar usuarios, contraseñas ni evidencias con datos sensibles.
 
-Actualización del 4 de noviembre de 2026: release `v1.2.3`, aplicación `1.2.3+8`, con
-`InteractorGate-Setup.exe` de 97 686 728 bytes (93,2 MiB). SHA-256:
-`6a3e46f83d02f87d24ce9a20dfc505f3cb4db17fdfb48ccd3e1efa45bcdbbee0`.
+Actualización del 6 de noviembre de 2026: release pública `v1.2.3-r2`, aplicación
+`1.2.3+8`, revisión de descarga 2. `InteractorGate-Setup.exe` tiene 97 730 116 bytes
+(93,2 MiB). SHA-256:
+`4be9e0497dc4f0a37ea1606b7522267b044f1f5c691d4062281a6355d84136be`.
 La descarga queda fijada a esa release para que versión, tamaño y hash correspondan
-al mismo archivo. La numeración continúa después de la release pública 1.2.2;
-reemplaza la referencia local anterior 1.0.6+7.
+al mismo archivo. La revisión 2 distingue la compilación actualizada de la
+distribución anterior `v1.2.3`, que se conserva sin sobrescribir sus archivos.
+Para registrar una evaluación, usar «1.2.3, revisión 2».
 
-Incluye las correcciones locales de accesibilidad y reconstruye la app Flutter y
-el servicio de mirada. Verificados: 52 pruebas del cliente, 41 del servicio,
-análisis estático sin incidencias y tres pruebas de arranque del servicio empaquetado
-sin cámara. Se incluyen bibliotecas Visual C++ junto al ejecutable Flutter.
+Incluye el login sin cámara, la calibración después de identificar al usuario,
+el seguimiento solo al mostrar el tablero y la detención de la cámara al cerrar
+sesión. ESC permite cancelar la calibración y existe una opción solo con mouse.
+Las peticiones de identidad esperan hasta 75 segundos; telemetría conserva 15.
+Se mantienen las correcciones de accesibilidad y las bibliotecas Visual C++ junto
+al ejecutable Flutter. Verificación automatizada: 63 pruebas del cliente, 48 del
+servicio, análisis sin incidencias y compilación del instalador satisfactoria.
 
-`release-manifest.json` conserva tamaño, hash y huellas del código utilizado; la
-compilación incluye cambios locales sobre el commit base allí indicado. No se
-publica el código fuente de la app. La instalación en otro equipo y las pruebas
-con cámara, lector de pantalla y participantes siguen pendientes.
+`release-manifest.json`, incluido también en la release, conserva versión, revisión,
+tamaño y hash del instalador. No incluye credenciales, datos de participantes ni
+referencias al código privado. La instalación desde cero, la precisión ocular,
+la evaluación con lector de pantalla y la validación con participantes siguen
+pendientes. La publicación no acredita conformidad WCAG AA completa.
 
 Para futuras versiones, actualizar juntos versión, fecha, tamaño, SHA-256, enlace
 y aviso al evaluador después de construir y comprobar el instalador correspondiente.
