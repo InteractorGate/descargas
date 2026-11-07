@@ -20,21 +20,24 @@ La sección pública [Indicaciones para evaluadores](https://interactorgate.gith
 explica cómo recibir las credenciales por privado, registrar el entorno y completar
 el Excel de casos. No publicar usuarios, contraseñas ni evidencias con datos sensibles.
 
-Actualización del 6 de noviembre de 2026: release pública `v1.2.3-r2`, aplicación
-`1.2.3+8`, revisión de descarga 2. `InteractorGate-Setup.exe` tiene 97 730 116 bytes
+Actualización del 6 de noviembre de 2026: release pública `v1.2.4`, aplicación
+`1.2.4+9`. `InteractorGate-Setup.exe` tiene 97 698 229 bytes
 (93,2 MiB). SHA-256:
-`4be9e0497dc4f0a37ea1606b7522267b044f1f5c691d4062281a6355d84136be`.
+`5401be6547f252579789b3cbdc1115d50752829eabb3aaf54bb9f782098d5827`.
 La descarga queda fijada a esa release para que versión, tamaño y hash correspondan
-al mismo archivo. La revisión 2 distingue la compilación actualizada de la
-distribución anterior `v1.2.3`, que se conserva sin sobrescribir sus archivos.
-Para registrar una evaluación, usar «1.2.3, revisión 2».
+al mismo archivo. Las distribuciones anteriores se conservan sin sobrescribir
+sus archivos. Para registrar una evaluación, usar «1.2.4».
 
 Incluye el login sin cámara, la calibración después de identificar al usuario,
 el seguimiento solo al mostrar el tablero y la detención de la cámara al cerrar
-sesión. ESC permite cancelar la calibración y existe una opción solo con mouse.
+sesión. Antes de calibrar se solicita autorización explícita: rechazar o cerrar
+el permiso no inicia la cámara; se puede continuar con mouse o teclado físico.
+El tablero permite desactivar la cámara y volver a la preparación. El permiso
+se solicita de nuevo al calibrar y no sustituye el consentimiento del estudio
+ni los permisos de Windows. ESC permite cancelar la calibración.
 Las peticiones de identidad esperan hasta 75 segundos; telemetría conserva 15.
 Se mantienen las correcciones de accesibilidad y las bibliotecas Visual C++ junto
-al ejecutable Flutter. Verificación automatizada: 63 pruebas del cliente, 48 del
+al ejecutable Flutter. Verificación automatizada: 64 pruebas del cliente, 48 del
 servicio, análisis sin incidencias y compilación del instalador satisfactoria.
 
 `release-manifest.json`, incluido también en la release, conserva versión, revisión,
