@@ -1,16 +1,16 @@
 {
-  "version": "1.2.5+10",
-  "public_tag": "v1.2.5",
+  "version": "1.2.7+12",
+  "public_tag": "v1.2.7",
   "distribution_revision": 1,
-  "published_on": "2026-11-13",
+  "published_on": "2026-11-17",
   "installer": {
     "name": "InteractorGate-Setup.exe",
-    "url": "https://github.com/InteractorGate/descargas/releases/download/v1.2.5/InteractorGate-Setup.exe",
-    "bytes": 97742481,
-    "sha256": "ce0e398f587d5d39d19b43c300225d5ff4af654cc446b3739674e8d4e560f65e"
+    "url": "https://github.com/InteractorGate/descargas/releases/download/v1.2.7/InteractorGate-Setup.exe",
+    "bytes": 97734732,
+    "sha256": "9b946ec5628f52b7b6a9d67a6863a7a9d9397367b90f8f1852ed4c06b3db328c"
   },
   "checks": {
-    "flutter_tests_passed": 76,
+    "flutter_tests_passed": 77,
     "sidecar_tests_passed": 48,
     "flutter_analyze": "passed",
     "windows_release_build": "passed",
