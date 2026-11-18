@@ -20,13 +20,19 @@ La sección pública [Indicaciones para evaluadores](https://interactorgate.gith
 explica cómo recibir las credenciales por privado, registrar el entorno y completar
 el Excel de casos. No publicar usuarios, contraseñas ni evidencias con datos sensibles.
 
-Actualización del 17 de noviembre de 2026: release pública `v1.2.7`, aplicación
-`1.2.7+12`. `InteractorGate-Setup.exe` tiene 97 734 732 bytes
-(93,2 MiB). SHA-256:
-`9b946ec5628f52b7b6a9d67a6863a7a9d9397367b90f8f1852ed4c06b3db328c`.
+Actualización del 18 de noviembre de 2026: release pública `v1.2.8`, aplicación
+`1.2.8+13`. `InteractorGate-Setup.exe` tiene 98 536 011 bytes
+(94,0 MiB). SHA-256:
+`764ca5853f28af0cce761c20f4adece71ee01e43834b60fdeb78c4ee866f7dee`.
 La descarga queda fijada a esa release para que versión, tamaño y hash correspondan
 al mismo archivo. Las distribuciones anteriores se conservan sin sobrescribir
-sus archivos. Para registrar una evaluación, usar «1.2.7».
+sus archivos. Para registrar una evaluación, usar «1.2.8».
+
+Novedades de la 1.2.8, a partir del feedback de los participantes: antes de
+calibrar, una vista en espejo con óvalo guía comprueba rostro, distancia
+aproximada (50 a 70 cm), centrado, cabeza derecha e iluminación; el botón
+HABLAR pasa a la izquierda de la caja de texto y cerrar sesión pide
+confirmación. Para actualizar basta con instalar encima de la versión anterior.
 
 Novedad de la 1.2.7: el estudio E2 se reduce a la mitad. La práctica tiene 5
 mensajes (bloques 3-2) y S2 y S3 tienen 10 frases cada una, en bloques
@@ -48,7 +54,7 @@ se solicita de nuevo al calibrar y no sustituye el consentimiento del estudio
 ni los permisos de Windows. ESC permite cancelar la calibración.
 Las peticiones de identidad esperan hasta 75 segundos; telemetría conserva 15.
 Se mantienen las correcciones de accesibilidad y las bibliotecas Visual C++ junto
-al ejecutable Flutter. Verificación automatizada: 77 pruebas del cliente, 48 del
+al ejecutable Flutter. Verificación automatizada: 78 pruebas del cliente, 57 del
 servicio, análisis sin incidencias y compilación del instalador satisfactoria.
 
 `release-manifest.json`, incluido también en la release, conserva versión, revisión,
