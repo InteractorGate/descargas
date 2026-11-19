@@ -20,13 +20,20 @@ La sección pública [Indicaciones para evaluadores](https://interactorgate.gith
 explica cómo recibir las credenciales por privado, registrar el entorno y completar
 el Excel de casos. No publicar usuarios, contraseñas ni evidencias con datos sensibles.
 
-Actualización del 18 de noviembre de 2026: release pública `v1.2.8`, aplicación
-`1.2.8+13`. `InteractorGate-Setup.exe` tiene 98 536 011 bytes
+Actualización del 19 de noviembre de 2026: release pública `v1.2.9`, aplicación
+`1.2.9+14`. `InteractorGate-Setup.exe` tiene 98 566 348 bytes
 (94,0 MiB). SHA-256:
-`764ca5853f28af0cce761c20f4adece71ee01e43834b60fdeb78c4ee866f7dee`.
+`8af1c2f35342fa675d523ed3e2bd31d91561dad80211167a8bd1f233c008127e`.
 La descarga queda fijada a esa release para que versión, tamaño y hash correspondan
 al mismo archivo. Las distribuciones anteriores se conservan sin sobrescribir
-sus archivos. Para registrar una evaluación, usar «1.2.8».
+sus archivos. Para registrar una evaluación, usar «1.2.9».
+
+Novedad de la 1.2.9: actualización automática. En la pantalla de inicio de
+sesión la app consulta `release-manifest.json`; si hay una versión más nueva,
+ofrece instalarla, descarga el instalador solo desde las releases de este
+repositorio, comprueba tamaño y SHA-256 y lo ejecuta en modo silencioso
+(Windows pide permiso de administrador). La 1.2.9 se instala a mano una vez;
+las siguientes llegan como aviso dentro de la app.
 
 Novedades de la 1.2.8, a partir del feedback de los participantes: antes de
 calibrar, una vista en espejo con óvalo guía comprueba rostro, distancia
@@ -54,7 +61,7 @@ se solicita de nuevo al calibrar y no sustituye el consentimiento del estudio
 ni los permisos de Windows. ESC permite cancelar la calibración.
 Las peticiones de identidad esperan hasta 75 segundos; telemetría conserva 15.
 Se mantienen las correcciones de accesibilidad y las bibliotecas Visual C++ junto
-al ejecutable Flutter. Verificación automatizada: 78 pruebas del cliente, 57 del
+al ejecutable Flutter. Verificación automatizada: 87 pruebas del cliente, 57 del
 servicio, análisis sin incidencias y compilación del instalador satisfactoria.
 
 `release-manifest.json`, incluido también en la release, conserva versión, revisión,
